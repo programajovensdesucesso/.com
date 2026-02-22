@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jovens de Sucesso - Trabalho Online Moçambique</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #006633 0%, #FFD700 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #006633;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            color: #FFD700;
+            font-size: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .tab-btn.active {
+            background: #006633;
+            color: white;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .required::after {
+            content: " *";
+            color: #ff0000;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #006633;
+            box-shadow: 0 0 0 3px rgba(0,102,51,0.1);
+        }
+
+        select {
+            cursor: pointer;
+            background: white;
+        }
+
+        select option {
+            padding: 10px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: #006633;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            background: #004d26;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,102,51,0.3);
+        }
+
+        .btn-submit i {
+            margin-right: 8px;
+        }
+
+        .welcome-message {
+            background: #f0f9f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #006633;
+        }
+
+        .welcome-message h3 {
+            color: #006633;
+            margin-bottom: 5px;
+        }
+
+        .welcome-message p {
+            color: #666;
+        }
+
+        .user-name-display {
+            font-size: 18px;
+            font-weight: 600;
+            color: #006633;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .whatsapp-link {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-link:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+        }
+
+        small {
+            color: #666;
+            font-size: 12px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1> Jovens de Sucesso</h1>
+            <h2>Trabalho Online Moçambique </h2>
+            <p>Faça parte da mudança em Moçambique</p>
+        </div>
+
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('login')">Entrar</button>
+            <button class="tab-btn" onclick="showTab('register')">Registar</button>
+        </div>
+
+        <!-- Tab de Login -->
+        <div id="login" class="tab-content active">
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="required">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Insira o e-mail" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Senha</label>
+                    <input type="password" id="loginPassword" placeholder="Insira sua senha" required>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+            </form>
+        </div>
+
+        <!-- Tab de Registro -->
+        <div id="register" class="tab-content">
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label class="required">Nome Completo</label>
+                    <input type="text" id="regNome" placeholder="Digite seu nome" required onkeyup="generateUsername()">
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Email</label>
+                    <input type="email" id="regEmail" placeholder="Insira seu e-mail" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Senha</label>
+                    <input type="password" id="regPassword" placeholder="Insira sua senha" required minlength="6">
+                </div>
+
+                <div class="user-name-display" id="usernameDisplay">
+                    Seu nome de utilizador aparecerá aqui
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-user-plus"></i> Registar
+                </button>
+            </form>
+        </div>
+
+        <!-- Formulário de Pedido de Vaga (aparece após login/registro) -->
+        <div id="vagaForm" style="display: none;">
+            <div class="welcome-message" id="welcomeMessage">
+                <h3>Bem-vindo, <span id="userName"></span>!</h3>
+                <p>Preencha o formulário para se candidatar</p>
+            </div>
+
+            <form id="candidaturaForm" onsubmit="enviarCandidatura(event)">
+                <div class="form-group">
+                    <label class="required">Nome Completo</label>
+                    <input type="text" id="candidatoNome" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Email</label>
+                    <input type="email" id="candidatoEmail" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Província</label>
+                    <select id="provincia" required onchange="carregarDistritos()">
+                        <option value="">Selecione uma província</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Distrito</label>
+                    <select id="distrito" required>
+                        <option value="">Primeiro selecione a província</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Tipo de Trabalho</label>
+                    <select id="tipoTrabalho" required>
+                        <option value="">Selecione uma opção</option>
+                        <option value="trabalho">Venda de serviço de internet</option>
+                        <option value="registo">Registo de Cartão</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Disponibilidade</label>
+                    <select id="disponibilidade" required>
+                        <option value="">Selecione</option>
+                        <option value="manha">Manhã (8h-12h)</option>
+                        <option value="tarde">Tarde (13h-17h)</option>
+                        <option value="fds">Fins de semana</option>
+                        <option value="flexivel">Horário flexível</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Motivação para ser trabalhador</label>
+                    <textarea id="motivacao" rows="4" required placeholder="Conte-nos porquê quer ser o nosso trabalhador..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Experiência prévia (opcional)</label>
+                    <textarea id="experiencia" rows="3" placeholder="Descreva experiências anteriores em trabalho..."></textarea>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="termos" required>
+                    <label for="termos">Concordo em enviar relatórios do trabalho via WhatsApp</label>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fab fa-whatsapp"></i> Enviar Candidatura via WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Dados de Moçambique
+        const dadosMocambique = {
+            "Cabo Delgado": ["Pemba", "Mueda", "Montepuez", "Chiúre", "Ancuabe", "Balama", "Namuno", "Macomia", "Quissanga", "Meluco", "Mocímboa da Praia", "Muidumbe", "Nangade", "Palma"],
+            "Gaza": ["Xai-Xai", "Chókwè", "Bilene", "Manjacaze", "Chibuto", "Guijá", "Mabalane", "Massingir", "Limpopo", "Chicualacuala", "Massangena"],
+            "Inhambane": ["Inhambane", "Maxixe", "Vilankulo", "Morrumbene", "Jangamo", "Panda", "Mabote", "Funhalouro", "Govuro", "Inhassoro", "Massinga", "Zavala"],
+            "Manica": ["Chimoio", "Gondola", "Manica", "Sussundenga", "Barué", "Machaze", "Macossa", "Tambara", "Bárue", "Vanduzi"],
+            "Maputo Cidade": ["KaMpfumo", "Nlhamankulu", "KaMaxaquene", "KaMavota", "KaMubukwana", "KaTembe", "KaNyaka"],
+            "Maputo Província": ["Matola", "Boane", "Magude", "Manhiça", "Marracuene", "Matutuíne", "Moamba", "Namaacha"],
+            "Nampula": ["Nampula", "Angoche", "Ilha de Moçambique", "Monapo", "Mossuril", "Muecate", "Murrupula", "Nacala", "Nacala-a-Velha", "Rapale", "Ribaué", "Lalaua", "Malema", "Mecubúri", "Memba", "Mogincual", "Moma"],
+            "Niassa": ["Lichinga", "Cuamba", "Lago", "Majune", "Mandimba", "Marrupa", "Mecula", "Metarica", "Mecanhelas", "Maua", "Ngauma", "Sanga"],
+            "Sofala": ["Beira", "Dondo", "Gorongosa", "Muanza", "Nhamatanda", "Búzi", "Caia", "Cheringoma", "Chibabava", "Maringué", "Marromeu"],
+            "Tete": ["Tete", "Angónia", "Cahora-Bassa", "Changara", "Chifunde", "Chiuta", "Magoé", "Marávia", "Mutarara", "Tsangano", "Zumbo"],
+            "Zambézia": ["Quelimane", "Alto Molócuè", "Chinde", "Gurúè", "Ile", "Inhassunge", "Lugela", "Maganja da Costa", "Milange", "Mocuba", "Mopeia", "Morrumbala", "Namacurra", "Namarroi", "Nicoadala", "Pebane"]
+        };
+
+        // Array de províncias
+        const provincias = Object.keys(dadosMocambique).sort();
+
+        // Carregar províncias no select
+        function carregarProvincias() {
+            const select = document.getElementById('provincia');
+            select.innerHTML = '<option value="">Selecione uma província</option>';
+            
+            provincias.forEach(provincia => {
+                const option = document.createElement('option');
+                option.value = provincia;
+                option.textContent = provincia;
+                select.appendChild(option);
+            });
+        }
+
+        // Carregar distritos baseado na província selecionada
+        function carregarDistritos() {
+            const provincia = document.getElementById('provincia').value;
+            const selectDistrito = document.getElementById('distrito');
+            
+            selectDistrito.innerHTML = '<option value="">Selecione um distrito</option>';
+            
+            if (provincia && dadosMocambique[provincia]) {
+                dadosMocambique[provincia].sort().forEach(distrito => {
+                    const option = document.createElement('option');
+                    option.value = distrito;
+                    option.textContent = distrito;
+                    selectDistrito.appendChild(option);
+                });
+            }
+        }
+
+        // Gerar nome de utilizador automaticamente
+        function generateUsername() {
+            const nome = document.getElementById('regNome').value;
+            const display = document.getElementById('usernameDisplay');
+            
+            if (nome.trim()) {
+                // Remover acentos e caracteres especiais
+                const nomeLimpo = nome.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                // Pegar primeiro nome e adicionar número aleatório
+                const primeiroNome = nomeLimpo.split(' ')[0].toLowerCase();
+                const numeroAleatorio = Math.floor(Math.random() * 1000);
+                const username = `${primeiroNome}.${numeroAleatorio}`;
+                
+                display.innerHTML = `<i class="fas fa-user"></i> @${username}`;
+                display.style.background = '#e8f5e9';
+            } else {
+                display.innerHTML = 'Seu nome de utilizador aparecerá aqui';
+                display.style.background = '#f5f5f5';
+            }
+        }
+
+        // Mostrar tabs
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Handle Login
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const senha = document.getElementById('loginPassword').value;
+            
+            // Simular verificação de login (em produção, isso seria feito no backend)
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.senha === senha);
+            
+            if (user) {
+                mostrarFormularioVaga(user);
+            } else {
+                alert('Email ou senha incorretos!');
+            }
+        }
+
+        // Handle Registro
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            const nome = document.getElementById('regNome').value;
+            const email = document.getElementById('regEmail').value;
+            const senha = document.getElementById('regPassword').value;
+            
+            if (!nome || !email || !senha) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            // Gerar username
+            const nomeLimpo = nome.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const primeiroNome = nomeLimpo.split(' ')[0].toLowerCase();
+            const numeroAleatorio = Math.floor(Math.random() * 1000);
+            const username = `${primeiroNome}.${numeroAleatorio}`;
+            
+            // Salvar usuário (em produção, isso seria feito no backend)
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            if (users.some(u => u.email === email)) {
+                alert('Este email já está registado!');
+                return;
+            }
+            
+            const newUser = { nome, email, senha, username };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            alert('Registo realizado com sucesso!');
+            mostrarFormularioVaga(newUser);
+        }
+
+        // Mostrar formulário de vaga
+        function mostrarFormularioVaga(user) {
+            document.querySelector('.tab-buttons').style.display = 'none';
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('register').style.display = 'none';
+            document.getElementById('vagaForm').style.display = 'block';
+            
+            document.getElementById('userName').textContent = user.nome.split(' ')[0];
+            document.getElementById('candidatoNome').value = user.nome;
+            document.getElementById('candidatoEmail').value = user.email;
+            
+            carregarProvincias();
+        }
+
+        // Enviar candidatura via WhatsApp
+        function enviarCandidatura(event) {
+            event.preventDefault();
+            
+            const nome = document.getElementById('candidatoNome').value;
+            const email = document.getElementById('candidatoEmail').value;
+            const provincia = document.getElementById('provincia').value;
+            const distrito = document.getElementById('distrito').value;
+            const tipo = document.getElementById('tipoVoluntariado').value;
+            const disponibilidade = document.getElementById('disponibilidade').value;
+            const motivacao = document.getElementById('motivacao').value;
+            const experiencia = document.getElementById('experiencia').value;
+            
+            // Buscar username do usuário
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email);
+            const username = user ? user.username : 'utilizador';
+            
+            // Criar mensagem para WhatsApp
+            const mensagem = `*NOVA CANDIDATURA - JOVENS DE SUCESSO*
+            
+ *Nome:* ${nome}
+ *Email:* ${email}
+ *Username:* @${username}
+
+ *Província:* ${provincia}
+ *Distrito:* ${distrito}
+ *Tipo:* ${tipo}
+⏰ *Disponibilidade:* ${disponibilidade}
+
+ *Motivação:*
+${motivacao}
+
+ *Experiência:*
+${experiencia || 'Não informada'}
+
+ *Enviado via:* Plataforma Jovens de Sucesso`;
+            
+            // Número do WhatsApp (substitua pelo número correto)
+            const numeroWhatsApp = '258858867098';
+            
+            // Codificar mensagem para URL
+            const mensagemCodificada = encodeURIComponent(mensagem);
+            
+            // Abrir WhatsApp
+            window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemCodificada}`, '_blank');
+            
+            // Mostrar confirmação
+            alert('Candidatura preparada! Será redirecionado para o WhatsApp.');
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarProvincias();
+            
+            // Verificar se já existe localStorage
+            if (!localStorage.getItem('users')) {
+                localStorage.setItem('users', '[]');
+            }
+        });
+    </script>
+</body>
+</html>
