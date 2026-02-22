@@ -250,6 +250,16 @@
             font-size: 12px;
             margin-top: 5px;
         }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            border: 1px solid #c3e6cb;
+        }
     </style>
     <!-- Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -257,8 +267,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1> Jovens de Sucesso</h1>
-            <h2>Trabalho Online Moçambique </h2>
+            <h1>🇲🇿 Jovens de Sucesso</h1>
+            <h2>Trabalho Online Moçambique</h2>
             <p>Faça parte da mudança em Moçambique</p>
         </div>
 
@@ -350,8 +360,8 @@
                     <label class="required">Tipo de Trabalho</label>
                     <select id="tipoTrabalho" required>
                         <option value="">Selecione uma opção</option>
-                        <option value="trabalho">Venda de serviço de internet</option>
-                        <option value="registo">Registo de Cartão</option>
+                        <option value="Venda de serviço de internet">📱 Venda de serviço de internet</option>
+                        <option value="Registo de Cartão">💳 Registo de Cartão</option>
                     </select>
                 </div>
 
@@ -359,10 +369,10 @@
                     <label class="required">Disponibilidade</label>
                     <select id="disponibilidade" required>
                         <option value="">Selecione</option>
-                        <option value="manha">Manhã (8h-12h)</option>
-                        <option value="tarde">Tarde (13h-17h)</option>
-                        <option value="fds">Fins de semana</option>
-                        <option value="flexivel">Horário flexível</option>
+                        <option value="Manhã (8h-12h)">🌅 Manhã (8h-12h)</option>
+                        <option value="Tarde (13h-17h)">☀️ Tarde (13h-17h)</option>
+                        <option value="Fins de semana">🎉 Fins de semana</option>
+                        <option value="Horário flexível">⏰ Horário flexível</option>
                     </select>
                 </div>
 
@@ -381,10 +391,14 @@
                     <label for="termos">Concordo em enviar relatórios do trabalho via WhatsApp</label>
                 </div>
 
-                <button type="submit" class="btn-submit">
+                <button type="submit" class="btn-submit" id="whatsappBtn">
                     <i class="fab fa-whatsapp"></i> Enviar Candidatura via WhatsApp
                 </button>
             </form>
+
+            <div id="mensagemSucesso" class="success-message" style="display: none;">
+                <i class="fas fa-check-circle"></i> Candidatura enviada com sucesso!
+            </div>
         </div>
     </div>
 
@@ -426,6 +440,7 @@
             const selectDistrito = document.getElementById('distrito');
             
             selectDistrito.innerHTML = '<option value="">Selecione um distrito</option>';
+            selectDistrito.disabled = !provincia;
             
             if (provincia && dadosMocambique[provincia]) {
                 dadosMocambique[provincia].sort().forEach(distrito => {
@@ -484,7 +499,7 @@
             if (user) {
                 mostrarFormularioVaga(user);
             } else {
-                alert('Email ou senha incorretos!');
+                alert('❌ Email ou senha incorretos!');
             }
         }
 
@@ -497,7 +512,12 @@
             const senha = document.getElementById('regPassword').value;
             
             if (!nome || !email || !senha) {
-                alert('Preencha todos os campos!');
+                alert('❌ Preencha todos os campos!');
+                return;
+            }
+            
+            if (senha.length < 6) {
+                alert('❌ A senha deve ter pelo menos 6 caracteres!');
                 return;
             }
             
@@ -511,7 +531,7 @@
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             
             if (users.some(u => u.email === email)) {
-                alert('Este email já está registado!');
+                alert('❌ Este email já está registado!');
                 return;
             }
             
@@ -519,7 +539,7 @@
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
             
-            alert('Registo realizado com sucesso!');
+            alert('✅ Registo realizado com sucesso!');
             mostrarFormularioVaga(newUser);
         }
 
@@ -541,60 +561,127 @@
         function enviarCandidatura(event) {
             event.preventDefault();
             
+            // Verificar se os termos foram aceitos
+            if (!document.getElementById('termos').checked) {
+                alert('❌ Deve concordar com os termos para enviar a candidatura!');
+                return;
+            }
+            
+            // Obter valores dos campos
             const nome = document.getElementById('candidatoNome').value;
             const email = document.getElementById('candidatoEmail').value;
             const provincia = document.getElementById('provincia').value;
             const distrito = document.getElementById('distrito').value;
-            const tipo = document.getElementById('tipoVoluntariado').value;
+            const tipoTrabalho = document.getElementById('tipoTrabalho').value;
             const disponibilidade = document.getElementById('disponibilidade').value;
             const motivacao = document.getElementById('motivacao').value;
             const experiencia = document.getElementById('experiencia').value;
+            
+            // Validar campos obrigatórios
+            if (!provincia || !distrito || !tipoTrabalho || !disponibilidade || !motivacao) {
+                alert('❌ Por favor, preencha todos os campos obrigatórios!');
+                return;
+            }
             
             // Buscar username do usuário
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const user = users.find(u => u.email === email);
             const username = user ? user.username : 'utilizador';
             
-            // Criar mensagem para WhatsApp
-            const mensagem = `*NOVA CANDIDATURA - JOVENS DE SUCESSO*
-            
- *Nome:* ${nome}
- *Email:* ${email}
- *Username:* @${username}
+            // Criar mensagem para WhatsApp com formatação melhorada
+            const mensagem = `*🚀 NOVA CANDIDATURA - JOVENS DE SUCESSO*
 
- *Província:* ${provincia}
- *Distrito:* ${distrito}
- *Tipo:* ${tipo}
+━━━━━━━━━━━━━━━━━━━━━
+*📋 DADOS PESSOAIS*
+━━━━━━━━━━━━━━━━━━━━━
+👤 *Nome:* ${nome}
+📧 *Email:* ${email}
+🔰 *Username:* @${username}
+
+━━━━━━━━━━━━━━━━━━━━━
+*📍 LOCALIZAÇÃO*
+━━━━━━━━━━━━━━━━━━━━━
+🌍 *Província:* ${provincia}
+🗺️ *Distrito:* ${distrito}
+
+━━━━━━━━━━━━━━━━━━━━━
+*💼 TRABALHO*
+━━━━━━━━━━━━━━━━━━━━━
+📌 *Tipo:* ${tipoTrabalho}
 ⏰ *Disponibilidade:* ${disponibilidade}
 
- *Motivação:*
+━━━━━━━━━━━━━━━━━━━━━
+*💭 MOTIVAÇÃO*
+━━━━━━━━━━━━━━━━━━━━━
 ${motivacao}
 
- *Experiência:*
+━━━━━━━━━━━━━━━━━━━━━
+*📊 EXPERIÊNCIA*
+━━━━━━━━━━━━━━━━━━━━━
 ${experiencia || 'Não informada'}
 
- *Enviado via:* Plataforma Jovens de Sucesso`;
+━━━━━━━━━━━━━━━━━━━━━
+*📱 Enviado via:* Plataforma Jovens de Sucesso
+*📅 Data:* ${new Date().toLocaleDateString('pt-PT')}`;
             
-            // Número do WhatsApp (substitua pelo número correto)
-            const numeroWhatsApp = '258858867098';
+            // Número do WhatsApp (formato internacional sem + ou espaços)
+            const numeroWhatsApp = '258858867098'; // Substitua pelo número correto
             
             // Codificar mensagem para URL
             const mensagemCodificada = encodeURIComponent(mensagem);
             
-            // Abrir WhatsApp
-            window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemCodificada}`, '_blank');
+            // Criar URL do WhatsApp
+            const whatsappUrl = `https://wa.me/${numeroWhatsApp}?text=${mensagemCodificada}`;
             
-            // Mostrar confirmação
-            alert('Candidatura preparada! Será redirecionado para o WhatsApp.');
+            // Desabilitar botão temporariamente para evitar múltiplos envios
+            const btn = document.getElementById('whatsappBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> A processar...';
+            
+            // Abrir WhatsApp em nova aba
+            window.open(whatsappUrl, '_blank');
+            
+            // Mostrar mensagem de sucesso
+            const mensagemSucesso = document.getElementById('mensagemSucesso');
+            mensagemSucesso.style.display = 'block';
+            
+            // Scroll para a mensagem de sucesso
+            mensagemSucesso.scrollIntoView({ behavior: 'smooth' });
+            
+            // Reabilitar botão após 3 segundos
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fab fa-whatsapp"></i> Enviar Candidatura via WhatsApp';
+            }, 3000);
+            
+            // Esconder mensagem de sucesso após 5 segundos
+            setTimeout(() => {
+                mensagemSucesso.style.display = 'none';
+            }, 5000);
         }
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
             carregarProvincias();
             
-            // Verificar se já existe localStorage
+            // Inicializar localStorage se não existir
             if (!localStorage.getItem('users')) {
                 localStorage.setItem('users', '[]');
+            }
+            
+            // Adicionar exemplo de usuário para teste (opcional)
+            const users = JSON.parse(localStorage.getItem('users'));
+            if (users.length === 0) {
+                // Adicionar usuário de teste
+                const testUser = {
+                    nome: "Usuário Teste",
+                    email: "teste@email.com",
+                    senha: "123456",
+                    username: "teste.123"
+                };
+                users.push(testUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                console.log('Usuário de teste criado: teste@email.com / 123456');
             }
         });
     </script>
